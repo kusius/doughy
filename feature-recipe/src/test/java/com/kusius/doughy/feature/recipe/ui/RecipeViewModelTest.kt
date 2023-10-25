@@ -25,6 +25,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import com.kusius.doughy.core.data.RecipeRepository
+import com.kusius.doughy.core.model.Recipe
 import com.kusius.doughy.feature.recipe.ui.RecipeUiState
 import com.kusius.doughy.feature.recipe.ui.RecipeViewModel
 
@@ -51,6 +52,8 @@ class RecipeViewModelTest {
 private class FakeRecipeRepository : RecipeRepository {
 
     private val data = mutableListOf<String>()
+    override val activeRecipe: Flow<Recipe>
+        get() = TODO("Not yet implemented")
 
     override val recipes: Flow<List<String>>
         get() = flow { emit(data.toList()) }

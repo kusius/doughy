@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import com.kusius.doughy.core.data.RecipeRepository
 import com.kusius.doughy.core.data.DefaultRecipeRepository
+import com.kusius.doughy.core.model.Recipe
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,6 +40,9 @@ interface DataModule {
 }
 
 class FakeRecipeRepository @Inject constructor() : RecipeRepository {
+    override val activeRecipe: Flow<Recipe>
+        get() = TODO("Not yet implemented")
+
     override val recipes: Flow<List<String>> = flowOf(fakeRecipes)
 
     override suspend fun add(name: String) {

@@ -24,7 +24,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import com.kusius.doughy.core.data.DefaultRecipeRepository
-import com.kusius.doughy.core.database.Recipe
+import com.kusius.doughy.core.database.RecipeEntity
 import com.kusius.doughy.core.database.RecipeDao
 
 /**
@@ -46,13 +46,13 @@ class DefaultRecipeRepositoryTest {
 
 private class FakeRecipeDao : RecipeDao {
 
-    private val data = mutableListOf<Recipe>()
+    private val data = mutableListOf<RecipeEntity>()
 
-    override fun getRecipes(): Flow<List<Recipe>> = flow {
+    override fun getRecipes(): Flow<List<RecipeEntity>> = flow {
         emit(data)
     }
 
-    override suspend fun insertRecipe(item: Recipe) {
+    override suspend fun insertRecipe(item: RecipeEntity) {
         data.add(0, item)
     }
 }
