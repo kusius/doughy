@@ -21,6 +21,10 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kusius.doughy.core.model.Percents
+import com.kusius.doughy.core.model.Recipe
+import com.kusius.doughy.core.model.Rests
+import com.kusius.doughy.core.model.YeastType
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,13 +42,33 @@ class RecipeScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            RecipeScreen(FAKE_DATA, onSave = {})
+            RecipeScreen(FAKE_DATA)
         }
     }
     @Test
     fun firstItem_exists() {
-        composeTestRule.onNodeWithText(FAKE_DATA.first()).assertExists().performClick()
+        composeTestRule.onNodeWithText(FAKE_DATA.name).assertExists().performClick()
     }
 }
 
-private val FAKE_DATA = listOf("Compose", "Room", "Kotlin")
+private val FAKE_DATA = Recipe(
+    name = "Poolish Dough",
+    percents = Percents(
+        totalFlourGrams = 1000,
+        hydrationPercent = 60f,
+        oilPercent = 2.5f,
+        saltPercent = 3f,
+        sugarsPercent = 0f,
+        yeastPercent = 1f,
+        yeastType = YeastType.FRESH,
+        prefermentPercent = 30f,
+        prefermentHydrationPercent = 100f,
+        prefermentUsesYeast = true,
+    ),
+    rests = Rests(
+        prefermentRestHours = 16,
+        bulkRestHours = 16,
+        ballsRestHours = 6,
+    ),
+    description = "A simple poolish recipe"
+)

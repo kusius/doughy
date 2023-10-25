@@ -23,8 +23,8 @@ import androidx.room.PrimaryKey
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
-@Entity
-data class Recipe(
+@Entity(tableName = "recipe")
+data class RecipeEntity(
     val name: String
 ) {
     @PrimaryKey(autoGenerate = true)
@@ -34,8 +34,8 @@ data class Recipe(
 @Dao
 interface RecipeDao {
     @Query("SELECT * FROM recipe ORDER BY uid DESC LIMIT 10")
-    fun getRecipes(): Flow<List<Recipe>>
+    fun getRecipes(): Flow<List<RecipeEntity>>
 
     @Insert
-    suspend fun insertRecipe(item: Recipe)
+    suspend fun insertRecipe(item: RecipeEntity)
 }

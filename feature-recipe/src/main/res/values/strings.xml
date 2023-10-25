@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recipe">Recipe</string>
+    <string name="scale_recipe">Scale for %1$d dough balls</string>
+    <string name="increment_dough_balls">Increase dough balls</string>
+    <string name="decrement_dough_balls">Decrease dough balls</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="preferment">Preferment</string>
+    <string name="dough">Dough</string>
+    <string name="flour">Flour</string>
+    <string name="water">Water</string>
+    <string name="honey">Honey</string>
+    <string name="fresh_yeast">Fresh yeast</string>
+    <string name="salt">Salt</string>
+</resources>

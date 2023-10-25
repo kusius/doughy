@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fb2af8bab1eb7f5ad6bc24bf582abfb3",
+    "identityHash": "8d3d906bd8bfe7deef5b1cbfd54033e1",
     "entities": [
       {
-        "tableName": "Recipe",
+        "tableName": "recipe",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
         "fields": [
           {
@@ -34,7 +34,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fb2af8bab1eb7f5ad6bc24bf582abfb3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8d3d906bd8bfe7deef5b1cbfd54033e1')"
     ]
   }
 }
