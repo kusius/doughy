@@ -17,7 +17,14 @@
 package com.kusius.doughy
 
 import android.app.Application
+import com.kusius.doughy.core.notifications.api.AlarmReceiver
+import com.kusius.doughy.core.notifications.api.startAlarmLooper
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class Doughy : Application()
+class Doughy : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        this.startAlarmLooper(AlarmReceiver::class.java)
+    }
+}

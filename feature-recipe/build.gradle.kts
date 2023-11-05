@@ -58,6 +58,7 @@ dependencies {
     implementation(project(":core-data"))
     implementation(project(":core-ui"))
     implementation(project(":core-model"))
+    implementation(project(":core-notifications-api"))
     androidTestImplementation(project(":core-testing"))
 
     // Core Android dependencies

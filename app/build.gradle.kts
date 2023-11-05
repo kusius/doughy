@@ -29,7 +29,7 @@ android {
 
     defaultConfig {
         applicationId = "com.kusius.doughy"
-        minSdk = 21
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -80,6 +80,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-notifications-api"))
     implementation(project(":core-ui"))
     implementation(project(":feature-recipe"))
 

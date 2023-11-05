@@ -3,12 +3,10 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.hilt.gradle)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "com.kusius.doughy.core.notifications.api"
+    namespace = "com.kusius.core_datastore"
     compileSdk = 34
 
     defaultConfig {
@@ -36,28 +34,17 @@ android {
 }
 
 dependencies {
-    implementation(project(":core-datastore"))
-    implementation(project(":core-testing"))
-
     // Arch Components
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
+    // Core Android dependencies
+    implementation(libs.androidx.core.ktx)
+    api(libs.androidx.datastore.preferences)
+
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.kotlinx.datetime)
 
     // Local tests: jUnit, coroutines, Android runner
-    testImplementation(libs.kotlin.test)
+    testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.kotlinx.coroutines.test)
-    implementation(libs.hilt.android.testing)
-    kapt(libs.hilt.android.compiler)
-
-    // Hilt and instrumented tests
-    androidTestImplementation(libs.kotlin.test)
-    androidTestImplementation(libs.kotlinx.coroutines.test)
-    androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.android.compiler)
-
 }

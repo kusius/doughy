@@ -25,18 +25,39 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import com.kusius.doughy.core.data.RecipeRepository
 import com.kusius.doughy.core.model.Recipe
+import com.kusius.doughy.core.notifications.api.NotificationData
+import com.kusius.doughy.core.notifications.api.NotificationQueue
+import com.kusius.doughy.feature.recipe.R
 import com.kusius.doughy.feature.recipe.ui.RecipeUiState.Loading
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import java.util.UUID
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 @HiltViewModel
 class RecipeViewModel @Inject constructor(
-    private val recipeRepository: RecipeRepository
+    private val recipeRepository: RecipeRepository,
+    private val notificationQueue: NotificationQueue
 ) : ViewModel() {
     private val _doughBallWeightGrams = 250
     private val _doughBallsAmount = MutableStateFlow(6)
+
+    init {
+        viewModelScope.launch {
+            notificationQueue.add(
+                NotificationData(
+                    id = UUID.randomUUID().leastSignificantBits.toInt(),
+                    channel = NotificationData.Channel.SCHEDULED,
+                    title = "Put dough in your anus!",
+                    description = "It's time to take the dough ball and stick it in your butthole.",
+                    icon = NotificationData.Icon.Res(R.drawable.water_drop),
+                    action = null,
+                    time = System.currentTimeMillis() + 10_000L
+                )
+            )
+        }
+    }
 
     // maps repo recipe to presentation state
     val uiState: StateFlow<RecipeUiState> = recipeRepository
