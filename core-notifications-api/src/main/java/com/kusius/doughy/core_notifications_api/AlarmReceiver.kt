@@ -40,6 +40,9 @@ fun Context.startAlarmLooper(loopReceiverClass: Class<out AlarmReceiver>) { // <
 
 @AndroidEntryPoint
 class AlarmReceiver : BroadcastReceiver() {
+    companion object {
+        private const val TAG = "AlarmReceiver"
+    }
 
     @Inject
     lateinit var queue: NotificationQueue
@@ -56,12 +59,13 @@ class AlarmReceiver : BroadcastReceiver() {
     private val loopPeriod = 15000L
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.i("AlarmReceiver", "onReceive: action : ${intent.action}")
+        Log.i(TAG, "onReceive: action : ${intent.action}")
 
         runBlocking(Dispatchers.IO) {
             val nextNotification = queue.peek()
             val wakeUpAtTime = if (nextNotification != null) {
                 if (Clock.System.now().toEpochMilliseconds() >= nextNotification.time) {
+                    Log.i(TAG, "onReceive: showing notification $nextNotification ")
                     showNotification(nextNotification)
                     queue.remove(nextNotification)
                     Clock.System.now().toEpochMilliseconds() + loopPeriod
@@ -86,7 +90,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
     private fun wakeUpAt(triggerAtMillis: Long, context: Context) {
         Log.i(
-            "AlarmReceiver", "wakeUpAt: ${
+            TAG, "wakeUpAt: ${
                 Instant.fromEpochMilliseconds(triggerAtMillis).toLocalDateTime(
                     TimeZone.currentSystemDefault()
                 )

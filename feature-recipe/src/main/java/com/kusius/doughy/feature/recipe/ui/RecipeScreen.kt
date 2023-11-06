@@ -16,7 +16,13 @@
 
 package com.kusius.doughy.feature.recipe.ui
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import com.kusius.doughy.core.ui.MyApplicationTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,17 +41,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusius.doughy.core.ui.components.IconWithText
@@ -55,6 +64,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun RecipeScreen(modifier: Modifier = Modifier, viewModel: RecipeViewModel = hiltViewModel()) {
+    RequestNotificationPermissions()
     val items by viewModel.uiState.collectAsStateWithLifecycle()
     if (items is RecipeUiState.RecipeData) {
         RecipeScreen(
@@ -62,6 +72,28 @@ fun RecipeScreen(modifier: Modifier = Modifier, viewModel: RecipeViewModel = hil
             onDoughBallsChanged = viewModel::onDoughBallsChanged,
             modifier = modifier
         )
+    }
+}
+
+@Composable
+internal fun RequestNotificationPermissions() {
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Log.i("Doughy", "Notifications granted")
+        } else {
+            Log.i("Doughy", "Notifications denied")
+        }
+    }
+
+    val context = LocalContext.current
+    when(PackageManager.PERMISSION_DENIED) {
+        ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) -> {
+            SideEffect {
+                launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 }
 
@@ -130,17 +162,18 @@ internal fun RecipeScreen(
                 text = stringResource(R.string.scale_recipe, numDoughBalls),
                 style = MaterialTheme.typography.headlineSmall
             )
-            IconButton(onClick = { changeDoughBalls(numDoughBalls + 1) }) {
-                Icon(
-                    Icons.Rounded.KeyboardArrowUp,
-                    contentDescription = stringResource(R.string.increment_dough_balls)
-                )
-            }
 
             IconButton(onClick = { changeDoughBalls(max(numDoughBalls - 1, 1)) }) {
                 Icon(
                     Icons.Rounded.KeyboardArrowDown,
                     contentDescription = stringResource(R.string.decrement_dough_balls)
+                )
+            }
+            
+            IconButton(onClick = { changeDoughBalls(numDoughBalls + 1) }) {
+                Icon(
+                    Icons.Rounded.KeyboardArrowUp,
+                    contentDescription = stringResource(R.string.increment_dough_balls)
                 )
             }
         }

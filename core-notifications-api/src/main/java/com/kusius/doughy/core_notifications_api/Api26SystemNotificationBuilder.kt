@@ -12,10 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 class Api26SystemNotificationBuilder @Inject constructor(private val context: Context, private val notificationManager: NotificationManager) : SystemNotificationBuilder {
-//
-//    @Inject
-//    lateinit var notificationManager: NotificationManager
-
     override fun buildSystemNotification(notificationData: NotificationData): Notification {
         val channel = createChannel(notificationData.channel)
         notificationManager.createNotificationChannel(channel)
