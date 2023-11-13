@@ -19,6 +19,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -26,7 +27,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 28
 
         testInstrumentationRunner = "com.kusius.doughy.core.testing.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -59,7 +60,14 @@ dependencies {
     implementation(project(":core-ui"))
     implementation(project(":core-model"))
     implementation(project(":core-notifications-api"))
+    implementation(project(":core-datastore"))
     androidTestImplementation(project(":core-testing"))
+
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    // Datetime
+    implementation(libs.kotlinx.datetime)
 
     // Core Android dependencies
     implementation(libs.androidx.activity.compose)

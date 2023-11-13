@@ -9,8 +9,8 @@ import kotlinx.serialization.Serializable
 data class NotificationData(
     val id: Int,
     val channel: Channel, // <1>
-    val title: String,
-    val description: String,
+    @StringRes val title: Int,
+    @StringRes val description: Int,
     val icon: Icon, // <3>
     val action: String? = null, // <5>
     val time: Long
