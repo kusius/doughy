@@ -8,3 +8,9 @@ class RecipePreviewParameterProvider : PreviewParameterProvider<RecipeUiState> {
             samplePoolishRecipe.asUiState(1500)
     )
 }
+
+class SchedulePreviewParameterProvider : PreviewParameterProvider<ScheduleUiState> {
+    override val values: Sequence<ScheduleUiState> = sequenceOf(
+        ScheduleUiState.Inactive
+    )
+}

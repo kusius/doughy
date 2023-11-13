@@ -42,33 +42,54 @@ class RecipeScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            RecipeScreen(FAKE_DATA)
+            RecipeScreen(
+                recipeData = FAKE_DATA,
+                scheduleData = ScheduleUiState.Inactive,
+                onDoughBallsChanged = {},
+                onScheduleStop = {},
+                onScheduleSet = {_, _ ->})
         }
     }
     @Test
     fun firstItem_exists() {
-        composeTestRule.onNodeWithText(FAKE_DATA.name).assertExists().performClick()
+        composeTestRule.onNodeWithText(FAKE_DATA.recipe.name).assertExists().performClick()
     }
 }
 
-private val FAKE_DATA = Recipe(
-    name = "Poolish Dough",
-    percents = Percents(
-        totalFlourGrams = 1000,
-        hydrationPercent = 60f,
-        oilPercent = 2.5f,
-        saltPercent = 3f,
-        sugarsPercent = 0f,
-        yeastPercent = 1f,
-        yeastType = YeastType.FRESH,
-        prefermentPercent = 30f,
-        prefermentHydrationPercent = 100f,
-        prefermentUsesYeast = true,
+private val FAKE_DATA = RecipeUiState.RecipeData(
+    totalFlourGrams = 1000,
+    recipe = Recipe(
+        name = "Poolish Dough",
+        percents = Percents(
+            hydrationPercent = 60f,
+            oilPercent = 2.5f,
+            saltPercent = 3f,
+            sugarsPercent = 0f,
+            yeastPercent = 1f,
+            yeastType = YeastType.FRESH,
+            prefermentPercent = 30f,
+            prefermentHydrationPercent = 100f,
+            prefermentUsesYeast = true,
+        ),
+        rests = Rests(
+            prefermentRestHours = 16,
+            bulkRestHours = 16,
+            ballsRestHours = 6,
+        ),
+        description = "A simple poolish recipe"
     ),
-    rests = Rests(
-        prefermentRestHours = 16,
-        bulkRestHours = 16,
-        ballsRestHours = 6,
+    prefermentGrams = PrefermentGrams(
+        flour = "300",
+        water = "300",
+        honey = "5",
+        yeast = "3"
     ),
-    description = "A simple poolish recipe"
+    doughGrams = DoughGrams(
+        flour = "300",
+        water = "300",
+        oil = "25",
+        salt = "15"
+    ),
 )
+
+

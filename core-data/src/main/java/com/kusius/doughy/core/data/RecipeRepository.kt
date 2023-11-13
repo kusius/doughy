@@ -64,7 +64,7 @@ val samplePoolishRecipe = Recipe(
     rests = Rests(
         prefermentRestHours = 16,
         bulkRestHours = 16,
-        ballsRestHours = 6
+        ballsRestHours = 3
     ),
     description = "A simple poolish recipe"
 )

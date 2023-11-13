@@ -12,4 +12,17 @@
     <string name="honey">Honey</string>
     <string name="fresh_yeast">Fresh yeast</string>
     <string name="salt">Salt</string>
+    <string name="schedule_description">"Set your preferred date and time to cook your pizzas! I will help you remember the key steps for the dough preparation. "</string>
+    <string name="schedule">Schedule</string>
+    <string name="preferment_prep_title">Preferment preparation</string>
+    <string name="preferment_prep_description">Mix together the preferment ingredients.Place them for one hour at room temperature and then in the fridge until its time to make the dough!</string>
+    <string name="bulk_prep_title">Prepare the dough</string>
+    <string name="bulk_prep_description">Mix the preferment with the rest of the ingredients and let them rest in the fridge until its time to portion them into balls.</string>
+    <string name="balls_prep_title">Portion the dough into balls</string>
+    <string name="balls_prep_description">Portion the dough into the amount of balls you have chosen, each one having the weight you have chosen</string>
+    <string name="cook_title">Time to cook the pizzas</string>
+    <string name="cook_description">Your oven should be nice and hot with its pizza stone hot. Enjoy your pizzas!</string>
+    <string name="preheat_oven_title">Preheat your over and stone</string>
+    <string name="preaheat_oven_description">Place your stone inside the oven and set it to max temperature. Now is a perfect time to do your mise en place! Cut your cheeses, veggies and other toppings for the pizzas.In 1 hour from now you will be eating delicious pizzas!</string>
+    <string name="cancel">Cancel</string>
 </resources>
