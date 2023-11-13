@@ -25,6 +25,7 @@ import com.kusius.doughy.core.ui.MyApplicationTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -177,6 +178,8 @@ private fun OverviewSection(
     modifier: Modifier = Modifier
 ) {
     var numDoughBalls by remember { mutableIntStateOf(numberOfDoughBalls) }
+    val spacing = 16.dp
+
     fun changeDoughBalls(doughBalls: Int) {
         numDoughBalls = doughBalls
         onDoughBallsChanged(numDoughBalls)
@@ -188,23 +191,38 @@ private fun OverviewSection(
     )
 
     Text(
-        modifier = Modifier.padding(start = 4.dp),
+        modifier = Modifier.padding(start = 4.dp, top = 8.dp, bottom = 8.dp),
         text = recipeData.recipe.description,
         style = MaterialTheme.typography.bodySmall
     )
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        IconWithText(painter = painterResource(id = R.drawable.water_drop), text = "${(recipeData.recipe.percents.hydrationPercent * 100).roundToInt()} %")
-        IconWithText(painter = painterResource(id = R.drawable.baseline_timer_24), text = "${recipeData.recipe.rests.bulkRestHours + recipeData.recipe.rests.prefermentRestHours} hrs")
-        IconWithText(painter = painterResource(id = R.drawable.baseline_snooze_24), text = "${recipeData.recipe.rests.ballsRestHours} hrs")
-    }
+        Column(verticalArrangement = Arrangement.spacedBy(spacing)) {
+            IconWithText(painter = painterResource(id = R.drawable.water_drop), text = "${(recipeData.recipe.percents.hydrationPercent * 100).roundToInt()} %")
+            IconWithText(painter = painterResource(id = R.drawable.hive_24px), text = "$numDoughBalls")
+        }
 
-    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-        IconWithText(painter = painterResource(id = R.drawable.hive_24px), text = "$numDoughBalls") // TODO: user provides balls
-        Text("X")
-        IconWithText(painter = painterResource(id = R.drawable.weight_24px), text = "$doughBallWeightGrams g") // TODO: user provides weight (or default 250g)
-        Text("=")
-        IconWithText(painter = painterResource(id = R.drawable.weight_24px), text = "${numDoughBalls * doughBallWeightGrams} g")
+        Column(verticalArrangement = Arrangement.spacedBy(spacing)) {
+            Text("")
+            Text("x")
+        }
+
+        Column(verticalArrangement = Arrangement.spacedBy(spacing)) {
+            IconWithText(painter = painterResource(id = R.drawable.baseline_timer_24), text = "${recipeData.recipe.rests.bulkRestHours + recipeData.recipe.rests.prefermentRestHours} hrs")
+            IconWithText(painter = painterResource(id = R.drawable.weight_24px), text = "$doughBallWeightGrams g") // TODO: user provides weight (or default 250g)
+
+        }
+
+        Column(verticalArrangement = Arrangement.spacedBy(spacing)) {
+            Text("")
+            Text("=")
+        }
+
+        Column(verticalArrangement = Arrangement.spacedBy(spacing)) {
+            IconWithText(painter = painterResource(id = R.drawable.baseline_snooze_24), text = "${recipeData.recipe.rests.ballsRestHours} hrs")
+            IconWithText(painter = painterResource(id = R.drawable.weight_24px), text = "${numDoughBalls * doughBallWeightGrams} g")
+
+        }
     }
 
     Row(modifier = Modifier
@@ -215,7 +233,6 @@ private fun OverviewSection(
     ) {
         Text(
             text = stringResource(R.string.scale_recipe, numDoughBalls),
-            style = MaterialTheme.typography.headlineSmall
         )
 
         IconButton(onClick = { changeDoughBalls(max(numDoughBalls - 1, 1)) }) {

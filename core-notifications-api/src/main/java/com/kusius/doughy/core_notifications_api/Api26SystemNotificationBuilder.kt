@@ -8,6 +8,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.CATEGORY_ALARM
 import androidx.core.app.NotificationCompat.PRIORITY_MAX
 import com.kusius.doughy.core.notifications.api.NotificationData
+import com.kusius.doughy.core.notifications.api.R
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -17,7 +18,7 @@ class Api26SystemNotificationBuilder @Inject constructor(private val context: Co
         notificationManager.createNotificationChannel(channel)
 
         return NotificationCompat.Builder(context, notificationData.channel.toString())
-            .setSmallIcon(androidx.core.R.drawable.ic_call_answer)
+            .setSmallIcon(R.drawable.skillet_24)
             .setAutoCancel(true)
             .setContentText(context.getString(notificationData.description))
             .setContentTitle(context.getString(notificationData.title))
