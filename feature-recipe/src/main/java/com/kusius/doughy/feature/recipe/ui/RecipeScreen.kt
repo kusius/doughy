@@ -25,7 +25,6 @@ import com.kusius.doughy.core.ui.MyApplicationTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -329,23 +328,33 @@ private fun ScheduleSection(
         recipeData.recipe.rests.totalRestHours(),
         DateTimeUnit.HOUR
     )
-    var localDateTime = initialSelectedInstant.toLocalDateTime(TimeZone.currentSystemDefault())
+    var chosenInstant by remember {
+//        mutableLongStateOf(initialSelectedInstant.toEpochMilliseconds())
+        mutableStateOf(initialSelectedInstant.toLocalDateTime(TimeZone.currentSystemDefault()))
+    }
 
     fun onDateSelected(date: Long?) {
         if (date != null) {
-            localDateTime = Instant.fromEpochMilliseconds(date).toLocalDateTime(TimeZone.currentSystemDefault())
+            chosenInstant =
+//                date
+                Instant.fromEpochMilliseconds(date).toLocalDateTime(TimeZone.currentSystemDefault())
             showTimePicker = true
         }
     }
 
     fun onTimeSelected(hour: Int, minute: Int) {
-        localDateTime = LocalDateTime(date = localDateTime.date, time = LocalTime(hour = hour, minute = minute))
+        chosenInstant =
+//            Instant.fromEpochMilliseconds(chosenInstant)
+//            .plus(hour, DateTimeUnit.HOUR)
+//            .plus(minute, DateTimeUnit.MINUTE)
+//            .toEpochMilliseconds()
+            LocalDateTime(date = chosenInstant.date, time = LocalTime(hour = hour, minute = minute))
         showNotificationPermission = true
     }
 
     fun onNotificationPermission(isGranted: Boolean) {
         showNotificationPermission = false
-        val instantMillis = localDateTime.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+        val instantMillis = chosenInstant.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
         onScheduleSet(instantMillis, isGranted)
     }
 
@@ -355,9 +364,10 @@ private fun ScheduleSection(
             onDateSelected = { onDateSelected(it) },
             onDismiss = { showDatePicker = false })
     } else if (showTimePicker) {
+        val earliestLocalDateTime = initialSelectedInstant.toLocalDateTime(TimeZone.currentSystemDefault())
         MyTimePickerDialog(
-            initialHour = localDateTime.hour,
-            initialMinute = localDateTime.minute,
+            initialHour = earliestLocalDateTime.hour,
+            initialMinute = earliestLocalDateTime.minute,
             onTimeSelected = { hour, minute -> onTimeSelected(hour, minute)},
             onDismiss = { showTimePicker = false }
         )
@@ -386,8 +396,8 @@ private fun ScheduleSection(
             )
         }
         Button(onClick = onScheduleStop) {
-                    Text(text = stringResource(id = R.string.cancel))
-                }
+            Text(text = stringResource(id = R.string.cancel))
+        }
     }
 }
 
