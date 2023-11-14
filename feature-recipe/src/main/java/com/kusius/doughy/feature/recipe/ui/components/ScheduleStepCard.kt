@@ -1,5 +1,10 @@
 package com.kusius.doughy.feature.recipe.ui.components
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +17,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -22,16 +31,26 @@ import com.kusius.doughy.core.ui.MyApplicationTheme
 @Composable
 fun ScheduleCard(title: String, description: String, date: String, modifier: Modifier = Modifier) {
     ElevatedCard(elevation = CardDefaults.cardElevation(10.dp)) {
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(8.dp)
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioNoBouncy,
+                        stiffness = Spring.StiffnessMedium
+                    )
+                ),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
             Row(modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = title, style = MaterialTheme.typography.labelLarge)
-                Text(text = date, style = MaterialTheme.typography.labelLarge)
+                Text(text = title, style = MaterialTheme.typography.titleMedium)
+                Text(text = date)
             }
 
-            Text(text = description, style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Justify)
+            Text(text = description, textAlign = TextAlign.Justify)
         }
     }
 }

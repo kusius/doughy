@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.annotation.CallSuper
+import androidx.multidex.BuildConfig
 import com.kusius.doughy.core_notifications_api.SystemNotificationBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -96,11 +97,17 @@ class AlarmReceiver : BroadcastReceiver() {
                 )
             }"
         )
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            triggerAtMillis,
-            getWakeUpIntent(context, false)!!
-        )
+        val canScheduleExactAlarms =
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S)
+                alarmManager.canScheduleExactAlarms() else true
+
+        if (canScheduleExactAlarms) {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                triggerAtMillis,
+                getWakeUpIntent(context, false)!!
+            )
+        }
     }
 
     private fun getWakeUpIntent(context: Context, noCreate: Boolean): PendingIntent? {

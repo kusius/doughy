@@ -25,7 +25,6 @@ fun IconWithText(painter: Painter, text: String, modifier: Modifier = Modifier) 
         )
         Text(
             text = text,
-            style = MaterialTheme.typography.headlineSmall
         )
     }
 }

@@ -177,6 +177,8 @@ private fun OverviewSection(
     modifier: Modifier = Modifier
 ) {
     var numDoughBalls by remember { mutableIntStateOf(numberOfDoughBalls) }
+    val spacing = 16.dp
+
     fun changeDoughBalls(doughBalls: Int) {
         numDoughBalls = doughBalls
         onDoughBallsChanged(numDoughBalls)
@@ -188,23 +190,38 @@ private fun OverviewSection(
     )
 
     Text(
-        modifier = Modifier.padding(start = 4.dp),
+        modifier = Modifier.padding(start = 4.dp, top = 8.dp, bottom = 8.dp),
         text = recipeData.recipe.description,
         style = MaterialTheme.typography.bodySmall
     )
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        IconWithText(painter = painterResource(id = R.drawable.water_drop), text = "${(recipeData.recipe.percents.hydrationPercent * 100).roundToInt()} %")
-        IconWithText(painter = painterResource(id = R.drawable.baseline_timer_24), text = "${recipeData.recipe.rests.bulkRestHours + recipeData.recipe.rests.prefermentRestHours} hrs")
-        IconWithText(painter = painterResource(id = R.drawable.baseline_snooze_24), text = "${recipeData.recipe.rests.ballsRestHours} hrs")
-    }
+        Column(verticalArrangement = Arrangement.spacedBy(spacing)) {
+            IconWithText(painter = painterResource(id = R.drawable.water_drop), text = "${(recipeData.recipe.percents.hydrationPercent * 100).roundToInt()} %")
+            IconWithText(painter = painterResource(id = R.drawable.hive_24px), text = "$numDoughBalls")
+        }
 
-    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-        IconWithText(painter = painterResource(id = R.drawable.hive_24px), text = "$numDoughBalls") // TODO: user provides balls
-        Text("X")
-        IconWithText(painter = painterResource(id = R.drawable.weight_24px), text = "$doughBallWeightGrams g") // TODO: user provides weight (or default 250g)
-        Text("=")
-        IconWithText(painter = painterResource(id = R.drawable.weight_24px), text = "${numDoughBalls * doughBallWeightGrams} g")
+        Column(verticalArrangement = Arrangement.spacedBy(spacing)) {
+            Text("")
+            Text("x")
+        }
+
+        Column(verticalArrangement = Arrangement.spacedBy(spacing)) {
+            IconWithText(painter = painterResource(id = R.drawable.baseline_timer_24), text = "${recipeData.recipe.rests.bulkRestHours + recipeData.recipe.rests.prefermentRestHours} hrs")
+            IconWithText(painter = painterResource(id = R.drawable.weight_24px), text = "$doughBallWeightGrams g") // TODO: user provides weight (or default 250g)
+
+        }
+
+        Column(verticalArrangement = Arrangement.spacedBy(spacing)) {
+            Text("")
+            Text("=")
+        }
+
+        Column(verticalArrangement = Arrangement.spacedBy(spacing)) {
+            IconWithText(painter = painterResource(id = R.drawable.baseline_snooze_24), text = "${recipeData.recipe.rests.ballsRestHours} hrs")
+            IconWithText(painter = painterResource(id = R.drawable.weight_24px), text = "${numDoughBalls * doughBallWeightGrams} g")
+
+        }
     }
 
     Row(modifier = Modifier
@@ -215,7 +232,6 @@ private fun OverviewSection(
     ) {
         Text(
             text = stringResource(R.string.scale_recipe, numDoughBalls),
-            style = MaterialTheme.typography.headlineSmall
         )
 
         IconButton(onClick = { changeDoughBalls(max(numDoughBalls - 1, 1)) }) {
@@ -312,23 +328,33 @@ private fun ScheduleSection(
         recipeData.recipe.rests.totalRestHours(),
         DateTimeUnit.HOUR
     )
-    var localDateTime = initialSelectedInstant.toLocalDateTime(TimeZone.currentSystemDefault())
+    var chosenInstant by remember {
+//        mutableLongStateOf(initialSelectedInstant.toEpochMilliseconds())
+        mutableStateOf(initialSelectedInstant.toLocalDateTime(TimeZone.currentSystemDefault()))
+    }
 
     fun onDateSelected(date: Long?) {
         if (date != null) {
-            localDateTime = Instant.fromEpochMilliseconds(date).toLocalDateTime(TimeZone.currentSystemDefault())
+            chosenInstant =
+//                date
+                Instant.fromEpochMilliseconds(date).toLocalDateTime(TimeZone.currentSystemDefault())
             showTimePicker = true
         }
     }
 
     fun onTimeSelected(hour: Int, minute: Int) {
-        localDateTime = LocalDateTime(date = localDateTime.date, time = LocalTime(hour = hour, minute = minute))
+        chosenInstant =
+//            Instant.fromEpochMilliseconds(chosenInstant)
+//            .plus(hour, DateTimeUnit.HOUR)
+//            .plus(minute, DateTimeUnit.MINUTE)
+//            .toEpochMilliseconds()
+            LocalDateTime(date = chosenInstant.date, time = LocalTime(hour = hour, minute = minute))
         showNotificationPermission = true
     }
 
     fun onNotificationPermission(isGranted: Boolean) {
         showNotificationPermission = false
-        val instantMillis = localDateTime.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+        val instantMillis = chosenInstant.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
         onScheduleSet(instantMillis, isGranted)
     }
 
@@ -338,9 +364,10 @@ private fun ScheduleSection(
             onDateSelected = { onDateSelected(it) },
             onDismiss = { showDatePicker = false })
     } else if (showTimePicker) {
+        val earliestLocalDateTime = initialSelectedInstant.toLocalDateTime(TimeZone.currentSystemDefault())
         MyTimePickerDialog(
-            initialHour = localDateTime.hour,
-            initialMinute = localDateTime.minute,
+            initialHour = earliestLocalDateTime.hour,
+            initialMinute = earliestLocalDateTime.minute,
             onTimeSelected = { hour, minute -> onTimeSelected(hour, minute)},
             onDismiss = { showTimePicker = false }
         )
@@ -369,8 +396,8 @@ private fun ScheduleSection(
             )
         }
         Button(onClick = onScheduleStop) {
-                    Text(text = stringResource(id = R.string.cancel))
-                }
+            Text(text = stringResource(id = R.string.cancel))
+        }
     }
 }
 
