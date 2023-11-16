@@ -28,11 +28,16 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        val major = 1
+        val minor = 0
+        val patch = 0
+        val rc = 2
+
         applicationId = "com.kusius.doughy"
         minSdk = 28
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0.0-rc2"
+        versionCode = major * 1000 + minor * 100 + patch * 10 + rc
+        versionName = "${major}.${minor}.${patch}-rc${rc}"
 
         vectorDrawables {
             useSupportLibrary = true
