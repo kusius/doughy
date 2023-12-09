@@ -25,6 +25,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import com.kusius.doughy.core.database.AppDatabase
 import com.kusius.doughy.core.database.RecipeDao
+import com.kusius.doughy.core.database.migrations.MIGRATION_1_2
 import javax.inject.Singleton
 
 @Module
@@ -42,6 +43,9 @@ class DatabaseModule {
             appContext,
             AppDatabase::class.java,
             "Recipe"
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2)
+            .fallbackToDestructiveMigration()
+            .build()
     }
 }

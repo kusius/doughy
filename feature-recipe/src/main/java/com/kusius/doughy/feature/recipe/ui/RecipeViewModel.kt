@@ -114,9 +114,9 @@ class RecipeViewModel @Inject constructor(
         ScheduleUiState.Inactive
     )
 
-    fun addRecipe(name: String) {
+    fun addRecipe(recipe: RecipeUiState.RecipeData) {
         viewModelScope.launch {
-            recipeRepository.add(name)
+            recipeRepository.add(recipe.recipe)
         }
     }
 

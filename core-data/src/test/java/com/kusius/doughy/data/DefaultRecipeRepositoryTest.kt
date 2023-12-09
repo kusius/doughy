@@ -16,6 +16,9 @@
 
 package com.kusius.doughy.data
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.preferencesOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -24,8 +27,10 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import com.kusius.doughy.core.data.DefaultRecipeRepository
+import com.kusius.doughy.core.data.sampleBigaRecipe
 import com.kusius.doughy.core.database.RecipeEntity
 import com.kusius.doughy.core.database.RecipeDao
+import kotlinx.coroutines.flow.flowOf
 
 /**
  * Unit tests for [DefaultRecipeRepository].
@@ -35,12 +40,14 @@ class DefaultRecipeRepositoryTest {
 
     @Test
     fun recipes_newItemSaved_itemIsReturned() = runTest {
-        val repository = DefaultRecipeRepository(FakeRecipeDao())
+        val repository = DefaultRecipeRepository(FakeRecipeDao(), FakeDatastore())
 
-        repository.add("Repository")
+        repository.add(sampleBigaRecipe)
 
-        assertEquals(repository.recipes.first().size, 1)
+        assertEquals(1, repository.allRecipes.first().size)
     }
+
+    // TODO: Tests with selection of recipes.
 
 }
 
@@ -52,7 +59,30 @@ private class FakeRecipeDao : RecipeDao {
         emit(data)
     }
 
-    override suspend fun insertRecipe(item: RecipeEntity) {
-        data.add(0, item)
+    override fun getRecipesList(): List<RecipeEntity> {
+        return data
     }
+
+    override fun getCustomRecipes(): Flow<List<RecipeEntity>> {
+        return flowOf(data.filter { it.isCustom })
+    }
+
+    override fun getRecipeByUid(uid: Int): RecipeEntity? {
+        return data.find { it.uid == uid }
+    }
+
+    override suspend fun insertRecipe(item: RecipeEntity) {
+        data.add(item)
+    }
+}
+
+private class FakeDatastore: DataStore<Preferences> {
+    private val preferences = preferencesOf()
+    override val data: Flow<Preferences>
+        get() = flowOf(preferences)
+
+    override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences): Preferences {
+        TODO("Not yet implemented")
+    }
+
 }

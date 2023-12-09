@@ -19,6 +19,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -52,12 +53,14 @@ android {
 dependencies {
     implementation(project(":core-database"))
     implementation(project(":core-model"))
+    implementation(project(":core-datastore"))
 
     // Arch Components
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.serialization.json)
 
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.junit)
