@@ -29,8 +29,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Entity(tableName = "recipe")
 data class RecipeEntity(
-    val name: String,
     val hydrationPercent: Float,
+    val name: String,
     val oilPercent: Float,
     val saltPercent: Float,
     val sugarsPercent: Float,

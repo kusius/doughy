@@ -37,6 +37,6 @@ class AppTest {
     @Test
     fun test1() {
         // TODO: Add navigation tests
-        composeTestRule.onNodeWithText(fakeRecipes.first(), substring = true).assertExists()
+        composeTestRule.onNodeWithText(fakeRecipes.first().name, substring = true).assertExists()
     }
 }
