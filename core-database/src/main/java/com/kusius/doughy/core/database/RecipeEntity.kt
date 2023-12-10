@@ -86,5 +86,5 @@ interface RecipeDao {
     fun getRecipeByUid(uid: Int): RecipeEntity?
 
     @Insert
-    suspend fun insertRecipe(item: RecipeEntity)
+    suspend fun insertRecipe(item: RecipeEntity): Long
 }
