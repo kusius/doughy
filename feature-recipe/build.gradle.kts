@@ -84,9 +84,6 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     // Tooling
     debugImplementation(libs.androidx.compose.ui.tooling)
-    // Instrumented tests
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     // Hilt Dependency Injection
     implementation(libs.hilt.android)
@@ -105,4 +102,6 @@ dependencies {
     // Instrumented tests: jUnit rules and runners
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

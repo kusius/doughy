@@ -44,6 +44,8 @@ class RecipeScreenTest {
         composeTestRule.setContent {
             RecipeScreen(
                 recipeData = FAKE_DATA,
+                numberOfDoughBalls = 1,
+                doughBallWeightGrams = 2,
                 scheduleData = ScheduleUiState.Inactive,
                 onDoughBallsChanged = {},
                 onScheduleStop = {},
@@ -76,7 +78,9 @@ private val FAKE_DATA = RecipeUiState.RecipeData(
             bulkRestHours = 16,
             ballsRestHours = 6,
         ),
-        description = "A simple poolish recipe"
+        description = "A simple poolish recipe",
+        isCustom = false,
+        uid = 443,
     ),
     prefermentGrams = PrefermentGrams(
         flour = "300",
@@ -90,6 +94,7 @@ private val FAKE_DATA = RecipeUiState.RecipeData(
         oil = "25",
         salt = "15"
     ),
+
 )
 
 

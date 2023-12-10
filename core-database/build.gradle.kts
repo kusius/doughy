@@ -64,10 +64,16 @@ android {
 
 dependencies {
     implementation(project(":core-model"))
+    implementation(project(":core-testing"))
+
     // Arch Components
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    testImplementation(libs.androidx.room.testing)
+
+    androidTestImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+
     ksp(libs.androidx.room.compiler)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
