@@ -27,7 +27,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 28
 
         testInstrumentationRunner = "com.kusius.doughy.core.testing.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -63,6 +63,13 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     // Local tests: jUnit, coroutines, Android runner
-    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit)
+
+    androidTestImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.test.core.ktx)
+    kaptAndroidTest(libs.hilt.android.compiler)
+
 }

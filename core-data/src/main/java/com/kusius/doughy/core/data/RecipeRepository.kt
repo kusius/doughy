@@ -19,9 +19,9 @@ interface RecipeRepository {
     val customRecipes: Flow<List<Recipe>>
     val allRecipes: Flow<List<Recipe>>
 
-    suspend fun add(recipe: Recipe)
+    suspend fun add(recipe: Recipe): Int
 
-    suspend fun selectRecipe(recipe: Recipe)
+    suspend fun selectRecipe(uid: Int)
 }
 
 private object PreferencesKeys {
@@ -37,7 +37,7 @@ class DefaultRecipeRepository @Inject constructor(
             val uid = preferences[PreferencesKeys.SELECTED_RECIPE_PREFERENCES_KEY]
             if (uid == null) {
                 val recipe = recipeDao.getRecipesList().first()
-                selectRecipe(recipe.asRecipe())
+                selectRecipe(recipe.uid)
                 null
             } else {
                 val recipe = recipeDao.getRecipeByUid(uid)
@@ -51,13 +51,13 @@ class DefaultRecipeRepository @Inject constructor(
     override val allRecipes: Flow<List<Recipe>>
         get() = recipeDao.getRecipes().map { it.map(RecipeEntity::asRecipe)}
 
-    override suspend fun add(recipe: Recipe) {
-        recipeDao.insertRecipe(recipe.asEntity())
+    override suspend fun add(recipe: Recipe): Int {
+        return recipeDao.insertRecipe(recipe.asEntity()).toInt()
     }
 
-    override suspend fun selectRecipe(recipe: Recipe) {
+    override suspend fun selectRecipe(uid: Int) {
         datastore.edit { preferences ->
-            preferences[PreferencesKeys.SELECTED_RECIPE_PREFERENCES_KEY] = recipe.uid
+            preferences[PreferencesKeys.SELECTED_RECIPE_PREFERENCES_KEY] = uid
         }
     }
 }

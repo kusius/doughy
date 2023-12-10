@@ -16,10 +16,12 @@
 
 package com.kusius.doughy.data
 
+import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.preferencesOf
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import androidx.datastore.preferences.preferencesDataStoreFile
+import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -28,26 +30,55 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import com.kusius.doughy.core.data.DefaultRecipeRepository
 import com.kusius.doughy.core.data.sampleBigaRecipe
+import com.kusius.doughy.core.data.samplePoolishRecipe
 import com.kusius.doughy.core.database.RecipeEntity
 import com.kusius.doughy.core.database.RecipeDao
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestScope
 
 /**
  * Unit tests for [DefaultRecipeRepository].
  */
-@OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
 class DefaultRecipeRepositoryTest {
+    companion object {
+        const val TEST_DATASTORE_NAME = "TestPrefsDatastore"
+    }
+
+    private val testDispatcher = StandardTestDispatcher()
+    private val testScope = TestScope(testDispatcher)
+    private val testContext: Context = ApplicationProvider.getApplicationContext()
+
+    private val testDataStore: DataStore<Preferences> =
+        PreferenceDataStoreFactory.create(
+            scope = testScope,
+            produceFile = { testContext.preferencesDataStoreFile(Companion.TEST_DATASTORE_NAME) }
+        )
 
     @Test
-    fun recipes_newItemSaved_itemIsReturned() = runTest {
-        val repository = DefaultRecipeRepository(FakeRecipeDao(), FakeDatastore())
+    fun recipes_newItemSaved_itemIsReturned() = runTest(testDispatcher) {
+
+        val repository = DefaultRecipeRepository(FakeRecipeDao(), testDataStore)
 
         repository.add(sampleBigaRecipe)
 
-        assertEquals(1, repository.allRecipes.first().size)
+        val recipeList = repository.allRecipes.first()
+
+        assertEquals(1, recipeList.size)
+        assertEquals(sampleBigaRecipe.description, recipeList.first().description)
     }
 
-    // TODO: Tests with selection of recipes.
+    @Test
+    fun recipe_selection_updates() = runTest(testDispatcher) {
+        val repository = DefaultRecipeRepository(FakeRecipeDao(), testDataStore)
+        // make sure that the selected recipe is in the database
+        val uid = repository.add(sampleBigaRecipe)
+
+        repository.selectRecipe(uid)
+        val actual = repository.activeRecipe.first()
+
+        assertEquals(sampleBigaRecipe.description, actual.description)
+    }
 
 }
 
@@ -71,18 +102,8 @@ private class FakeRecipeDao : RecipeDao {
         return data.find { it.uid == uid }
     }
 
-    override suspend fun insertRecipe(item: RecipeEntity) {
+    override suspend fun insertRecipe(item: RecipeEntity): Long {
         data.add(item)
+        return item.uid.toLong()
     }
-}
-
-private class FakeDatastore: DataStore<Preferences> {
-    private val preferences = preferencesOf()
-    override val data: Flow<Preferences>
-        get() = flowOf(preferences)
-
-    override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences): Preferences {
-        TODO("Not yet implemented")
-    }
-
 }

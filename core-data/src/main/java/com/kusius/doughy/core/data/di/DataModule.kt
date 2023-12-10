@@ -33,11 +33,11 @@ class FakeRecipeRepository @Inject constructor() : RecipeRepository {
     override val allRecipes: Flow<List<Recipe>>
         get() = TODO("Not yet implemented")
 
-    override suspend fun add(recipe: Recipe) {
+    override suspend fun add(recipe: Recipe): Int {
         throw NotImplementedError()
     }
 
-    override suspend fun selectRecipe(recipe: Recipe) {
+    override suspend fun selectRecipe(uid: Int) {
         TODO("Not yet implemented")
     }
 }
