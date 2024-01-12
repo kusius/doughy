@@ -52,7 +52,7 @@ class DefaultRecipeRepositoryTest {
     private val testDataStore: DataStore<Preferences> =
         PreferenceDataStoreFactory.create(
             scope = testScope,
-            produceFile = { testContext.preferencesDataStoreFile(Companion.TEST_DATASTORE_NAME) }
+            produceFile = { testContext.preferencesDataStoreFile(TEST_DATASTORE_NAME) }
         )
 
     @Test
