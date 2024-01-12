@@ -89,6 +89,7 @@ dependencies {
     implementation(project(":core-notifications-api"))
     implementation(project(":core-ui"))
     implementation(project(":feature-recipe"))
+    implementation(project(":feature-recipe-selection"))
 
     // Core Android dependencies
     implementation(libs.androidx.core.ktx)
