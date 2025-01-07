@@ -12,8 +12,8 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 28
-
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
         testInstrumentationRunner = "com.kusius.doughy.core.testing.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
     }

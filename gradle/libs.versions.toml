@@ -1,4 +1,6 @@
 [versions]
+android-minSdk = "28"
+android-targetSdk = "35"
 androidGradlePlugin = "8.1.1"
 androidxActivity = "1.7.2"
 androidxComposeBom = "2023.08.00"

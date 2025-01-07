@@ -34,8 +34,8 @@ android {
         val rc = 2
 
         applicationId = "com.kusius.doughy"
-        minSdk = 28
-        targetSdk = 34
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = major * 1000 + minor * 100 + patch * 10 + rc
         versionName = "${major}.${minor}.${patch}-rc${rc}"
 
