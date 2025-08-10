@@ -25,7 +25,7 @@ plugins {
 
 android {
     namespace = "com.kusius.doughy"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         val major = 1
