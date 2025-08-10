@@ -30,8 +30,8 @@ android {
     defaultConfig {
         val major = 1
         val minor = 0
-        val patch = 0
-        val rc = 3
+        val patch = 1
+        val rc = 0
 
         applicationId = "com.kusius.doughy"
         minSdk = libs.versions.android.minSdk.get().toInt()
