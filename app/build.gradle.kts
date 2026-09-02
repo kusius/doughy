@@ -29,8 +29,8 @@ android {
 
     defaultConfig {
         val major = 1
-        val minor = 0
-        val patch = 1
+        val minor = 2
+        val patch = 0
         val rc = 0
 
         applicationId = "com.kusius.doughy"
