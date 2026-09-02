@@ -1,0 +1,124 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "62bce38f832583a0ceef928a372e0ea1",
+    "entities": [
+      {
+        "tableName": "recipe",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `hydrationPercent` REAL NOT NULL, `oilPercent` REAL NOT NULL, `saltPercent` REAL NOT NULL, `sugarsPercent` REAL NOT NULL, `yeastPercent` REAL NOT NULL, `yeastType` TEXT NOT NULL, `prefermentPercent` REAL NOT NULL, `prefermentHydrationPercent` REAL NOT NULL, `prefermentUsesYeast` INTEGER NOT NULL, `prefermentRestHours` INTEGER NOT NULL, `bulkRestHours` INTEGER NOT NULL, `ballsRestHours` INTEGER NOT NULL, `description` TEXT NOT NULL, `isCustom` INTEGER NOT NULL, `uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hydrationPercent",
+            "columnName": "hydrationPercent",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "oilPercent",
+            "columnName": "oilPercent",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "saltPercent",
+            "columnName": "saltPercent",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sugarsPercent",
+            "columnName": "sugarsPercent",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "yeastPercent",
+            "columnName": "yeastPercent",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "yeastType",
+            "columnName": "yeastType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "prefermentPercent",
+            "columnName": "prefermentPercent",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "prefermentHydrationPercent",
+            "columnName": "prefermentHydrationPercent",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "prefermentUsesYeast",
+            "columnName": "prefermentUsesYeast",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "prefermentRestHours",
+            "columnName": "prefermentRestHours",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bulkRestHours",
+            "columnName": "bulkRestHours",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ballsRestHours",
+            "columnName": "ballsRestHours",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isCustom",
+            "columnName": "isCustom",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uid",
+            "columnName": "uid",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "uid"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '62bce38f832583a0ceef928a372e0ea1')"
+    ]
+  }
+}

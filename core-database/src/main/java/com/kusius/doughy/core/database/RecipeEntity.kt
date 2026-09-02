@@ -21,21 +21,88 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
+import com.kusius.doughy.core.model.Percents
+import com.kusius.doughy.core.model.Recipe
+import com.kusius.doughy.core.model.Rests
+import com.kusius.doughy.core.model.YeastType
 import kotlinx.coroutines.flow.Flow
 
 @Entity(tableName = "recipe")
 data class RecipeEntity(
-    val name: String
+    val hydrationPercent: Float,
+    val name: String,
+    val oilPercent: Float,
+    val saltPercent: Float,
+    val sugarsPercent: Float,
+    val yeastPercent: Float,
+    val yeastType: YeastType,
+    val prefermentPercent: Float,
+    val prefermentHydrationPercent: Float,
+    val prefermentUsesYeast: Boolean,
+    val prefermentRestHours: Int,
+    val bulkRestHours: Int,
+    val ballsRestHours: Int,
+    val description: String,
+    val isCustom: Boolean
 ) {
     @PrimaryKey(autoGenerate = true)
     var uid: Int = 0
 }
 
+fun RecipeEntity.asRecipe() = Recipe(
+    name = name,
+    percents = Percents(
+        hydrationPercent = hydrationPercent,
+        oilPercent = oilPercent,
+        saltPercent = saltPercent,
+        sugarsPercent = sugarsPercent,
+        yeastPercent = yeastPercent,
+        yeastType = yeastType,
+        prefermentHydrationPercent = prefermentHydrationPercent,
+        prefermentPercent = prefermentPercent,
+        prefermentUsesYeast = prefermentUsesYeast
+    ),
+    rests = Rests(
+        prefermentRestHours = prefermentRestHours,
+        bulkRestHours = bulkRestHours,
+        ballsRestHours = ballsRestHours,
+    ),
+    description = description,
+    isCustom = isCustom,
+    uid = uid
+)
+
+fun Recipe.asEntity() = RecipeEntity(
+    name = name,
+    hydrationPercent = percents.hydrationPercent,
+    oilPercent = percents.oilPercent,
+    saltPercent = percents.saltPercent,
+    sugarsPercent = percents.sugarsPercent,
+    yeastPercent = percents.yeastPercent,
+    yeastType = percents.yeastType,
+    prefermentPercent = percents.prefermentPercent,
+    prefermentHydrationPercent = percents.prefermentHydrationPercent,
+    prefermentUsesYeast = percents.prefermentUsesYeast,
+    prefermentRestHours = rests.prefermentRestHours,
+    bulkRestHours = rests.bulkRestHours,
+    ballsRestHours = rests.ballsRestHours,
+    description = description,
+    isCustom = isCustom,
+)
+
 @Dao
 interface RecipeDao {
-    @Query("SELECT * FROM recipe ORDER BY uid DESC LIMIT 10")
+    @Query("SELECT * FROM recipe ORDER BY name DESC")
     fun getRecipes(): Flow<List<RecipeEntity>>
+    @Query("SELECT * FROM recipe ORDER BY name DESC")
+    suspend fun getRecipesList(): List<RecipeEntity>
+
+    @Query("SELECT * FROM recipe WHERE isCustom = 1")
+    fun getCustomRecipes(): Flow<List<RecipeEntity>>
+
+    @Query("SELECT * FROM recipe WHERE uid = :uid")
+    suspend fun getRecipeByUid(uid: Int): RecipeEntity?
 
     @Insert
-    suspend fun insertRecipe(item: RecipeEntity)
+    suspend fun insertRecipe(item: RecipeEntity): Long
 }

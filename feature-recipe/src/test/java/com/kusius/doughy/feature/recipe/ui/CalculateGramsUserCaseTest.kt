@@ -27,7 +27,9 @@ class CalculateGramsUserCaseTest {
             bulkRestHours = 16,
             ballsRestHours = 6
         ),
-        description = "A simple poolish recipe"
+        description = "A simple poolish recipe",
+        isCustom = false,
+        uid = 0
     )
 
     @Test

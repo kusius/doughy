@@ -18,6 +18,8 @@ package com.kusius.doughy.core.database.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,6 +27,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import com.kusius.doughy.core.database.AppDatabase
 import com.kusius.doughy.core.database.RecipeDao
+import com.kusius.doughy.core.database.migrations.MIGRATION_1_2
+import com.kusius.doughy.core.database.migrations.addPredefinedRecipes
 import javax.inject.Singleton
 
 @Module
@@ -42,6 +46,16 @@ class DatabaseModule {
             appContext,
             AppDatabase::class.java,
             "Recipe"
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2)
+            // A database created from scratch never runs MIGRATION_1_2, so it has to be
+            // seeded with the predefined recipes here as well.
+            .addCallback(object : RoomDatabase.Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    db.addPredefinedRecipes()
+                }
+            })
+            .fallbackToDestructiveMigration()
+            .build()
     }
 }

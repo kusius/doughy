@@ -16,6 +16,7 @@
 
 package com.kusius.doughy.feature.recipe.ui
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -25,6 +26,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -62,7 +64,8 @@ private object PreferencesKeys {
 class RecipeViewModel @Inject constructor(
     private val recipeRepository: RecipeRepository,
     private val notificationQueue: NotificationQueue,
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
     private val _schedule = MutableStateFlow<ScheduleUiState>(ScheduleUiState.Inactive)
 
@@ -73,7 +76,8 @@ class RecipeViewModel @Inject constructor(
             _schedule.value = if (schedule == null) {
                 ScheduleUiState.Inactive
             } else {
-                Json.decodeFromString<ScheduleUiState>(schedule)
+                runCatching { Json.decodeFromString<ScheduleUiState>(schedule) }
+                    .getOrDefault(ScheduleUiState.Inactive)
             }
 
             val doughBallWeight = dataStore.data.first()[PreferencesKeys.PREFERENCES_DOUGH_BALL_WEIGHT_KEY]
@@ -114,9 +118,9 @@ class RecipeViewModel @Inject constructor(
         ScheduleUiState.Inactive
     )
 
-    fun addRecipe(name: String) {
+    fun addRecipe(recipe: RecipeUiState.RecipeData) {
         viewModelScope.launch {
-            recipeRepository.add(name)
+            recipeRepository.add(recipe.recipe)
         }
     }
 
@@ -139,9 +143,8 @@ class RecipeViewModel @Inject constructor(
                             NotificationData(
                                 id = UUID.randomUUID().leastSignificantBits.toInt(),
                                 channel = NotificationData.Channel.SCHEDULED,
-                                title = it.title,
-                                description = it.description,
-                                icon = NotificationData.Icon.Res(R.drawable.water_drop),
+                                title = context.getString(it.type.titleRes()),
+                                description = context.getString(it.type.descriptionRes()),
                                 action = null,
                                 time = steps[index].time
                             )
@@ -210,10 +213,29 @@ sealed interface ScheduleUiState {
 }
 @Serializable
 data class ScheduleStep(
-    @StringRes val title: Int,
-    @StringRes val description: Int,
-    val time: String
+    val type: Type,
+    val timeMillis: Long
 )
+
+// Resource ids are regenerated on every build, so a persisted schedule can only hold the
+// step type; the strings it maps to are resolved when the step is shown.
+@StringRes
+internal fun Type.titleRes() = when (this) {
+    Type.PREFERMENT -> R.string.preferment_prep_title
+    Type.BULK -> R.string.bulk_prep_title
+    Type.BALLS -> R.string.balls_prep_title
+    Type.PREHEAT -> R.string.preheat_oven_title
+    Type.COOK -> R.string.cook_title
+}
+
+@StringRes
+internal fun Type.descriptionRes() = when (this) {
+    Type.PREFERMENT -> R.string.preferment_prep_description
+    Type.BULK -> R.string.bulk_prep_description
+    Type.BALLS -> R.string.balls_prep_description
+    Type.PREHEAT -> R.string.preaheat_oven_description
+    Type.COOK -> R.string.cook_description
+}
 
 internal fun Recipe.asUiState(totalDoughGrams: Int): RecipeUiState.RecipeData {
     val totalFlourGrams = with(percents) {
@@ -244,19 +266,7 @@ internal fun Recipe.asUiState(totalDoughGrams: Int): RecipeUiState.RecipeData {
     )
 }
 
-internal fun Schedule.asUiState(): ScheduleStep {
-    val (title, description) = when(type) {
-        Type.PREFERMENT -> Pair(R.string.preferment_prep_title, R.string.preferment_prep_description)
-        Type.BULK -> Pair(R.string.bulk_prep_title, R.string.bulk_prep_description)
-        Type.BALLS -> Pair(R.string.balls_prep_title, R.string.balls_prep_description)
-        Type.PREHEAT -> Pair(R.string.preheat_oven_title, R.string.preaheat_oven_description)
-        Type.COOK -> Pair(R.string.cook_title, R.string.cook_description)
-    }
-    val formatDateUseCase = FormatDateUseCase()
-
-    return ScheduleStep(
-        title = title,
-        description = description,
-        time = formatDateUseCase(time)
-    )
-}
+internal fun Schedule.asUiState() = ScheduleStep(
+    type = type,
+    timeMillis = time
+)

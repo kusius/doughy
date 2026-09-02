@@ -40,6 +40,11 @@ android {
         }
     }
 
+    sourceSets {
+        // Adds exported schema location as test app assets.
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
+
     buildFeatures {
         aidl = false
         buildConfig = false
@@ -58,9 +63,17 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-model"))
+    androidTestImplementation(project(":core-testing"))
+
     // Arch Components
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+
+    androidTestImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+
     ksp(libs.androidx.room.compiler)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

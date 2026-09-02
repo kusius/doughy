@@ -40,7 +40,8 @@ class PersistentNotificationQueue @Inject constructor (
     }
 
     override suspend fun clear() {
-        dataStore.edit { it.clear() }
+        // Only the queue belongs to this class; the datastore is shared with the rest of the app.
+        dataStore.edit { it.remove(PreferencesKeys.NOTIFICATION_PREFERENCES_KEY) }
     }
 
     override suspend fun peek(): NotificationData? {
@@ -51,6 +52,9 @@ class PersistentNotificationQueue @Inject constructor (
     suspend fun loadNotifications(): List<NotificationData> { // <4>
         val notificationsJson = dataStore.data.first()[PreferencesKeys.NOTIFICATION_PREFERENCES_KEY]
         return if (notificationsJson == null) emptyList()
-        else Json.decodeFromString(notificationsJson)
+        // A queue written by an older build may no longer decode; dropping it is better than
+        // failing every read from then on.
+        else runCatching { Json.decodeFromString<List<NotificationData>>(notificationsJson) }
+            .getOrDefault(emptyList())
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun IconWithText(painter: Painter, text: String, modifier: Modifier = Modifier) {
     Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {

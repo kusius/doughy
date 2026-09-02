@@ -37,7 +37,7 @@ android {
 
 dependencies {
     implementation(project(":core-datastore"))
-    implementation(project(":core-testing"))
+    androidTestImplementation(project(":core-testing"))
 
     // Arch Components
     implementation(libs.hilt.android)
@@ -50,8 +50,6 @@ dependencies {
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.kotlinx.coroutines.test)
-    implementation(libs.hilt.android.testing)
     kapt(libs.hilt.android.compiler)
 
     // Hilt and instrumented tests

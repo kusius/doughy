@@ -9,6 +9,9 @@ import java.util.Locale
 class FormatDateUseCase() {
     operator fun invoke(timeMillis: Long): String {
         val time = Instant.fromEpochMilliseconds(timeMillis).toLocalDateTime(TimeZone.currentSystemDefault())
-        return "${time.dayOfMonth} ${time.month.getDisplayName(TextStyle.SHORT, Locale.getDefault())} ${time.hour} : ${time.minute}"
+        val month = time.month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+        val hour = time.hour.toString().padStart(2, '0')
+        val minute = time.minute.toString().padStart(2, '0')
+        return "${time.dayOfMonth} $month $hour:$minute"
     }
 }
