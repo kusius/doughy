@@ -4,7 +4,7 @@ import androidx.room.testing.MigrationTestHelper
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.kusius.doughy.core.database.migrations.MIGRATION_1_2
-import com.kusius.doughy.core.database.migrations.predefinedRecipes
+import com.kusius.doughy.core.model.predefinedRecipes
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -10,9 +10,8 @@ class NotificationDataSerializationTest {
     private val testNotification = NotificationData(
         id = 1,
         channel = NotificationData.Channel.SCHEDULED,
-        title = 1, // stringres
-        description = 2, // stringres
-        icon = NotificationData.Icon.Url(url ="www.google.com"),
+        title = "Preferment preparation",
+        description = "Mix together the preferment ingredients.",
         action = null,
         time = System.currentTimeMillis()
     )

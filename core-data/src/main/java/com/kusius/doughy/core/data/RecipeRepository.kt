@@ -4,7 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
-import com.kusius.doughy.core.data.model.asEntity
+import com.kusius.doughy.core.database.asEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import com.kusius.doughy.core.database.RecipeDao
@@ -36,8 +36,7 @@ class DefaultRecipeRepository @Inject constructor(
         get() = datastore.data.mapNotNull { preferences ->
             val uid = preferences[PreferencesKeys.SELECTED_RECIPE_PREFERENCES_KEY]
             if (uid == null) {
-                val recipe = recipeDao.getRecipesList().first()
-                selectRecipe(recipe.uid)
+                recipeDao.getRecipesList().firstOrNull()?.let { selectRecipe(it.uid) }
                 null
             } else {
                 val recipe = recipeDao.getRecipeByUid(uid)

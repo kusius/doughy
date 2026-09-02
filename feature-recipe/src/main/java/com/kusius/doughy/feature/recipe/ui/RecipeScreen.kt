@@ -22,6 +22,7 @@ import android.content.res.Configuration
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import com.kusius.doughy.core.ui.MyApplicationTheme
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -78,7 +79,11 @@ import java.lang.Integer.max
 import kotlin.math.roundToInt
 
 @Composable
-fun RecipeScreen(modifier: Modifier = Modifier, viewModel: RecipeViewModel = hiltViewModel()) {
+fun RecipeScreen(
+    onChangeRecipe: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: RecipeViewModel = hiltViewModel()
+) {
     val items by viewModel.uiState.collectAsStateWithLifecycle()
     val schedule by viewModel.scheduleUiState.collectAsStateWithLifecycle()
     val numberOfDoughBalls by viewModel.numberOfDoughBalls.collectAsStateWithLifecycle()
@@ -93,6 +98,7 @@ fun RecipeScreen(modifier: Modifier = Modifier, viewModel: RecipeViewModel = hil
             onDoughBallsChanged = viewModel::onDoughBallsChanged,
             onScheduleSet = viewModel::shouldBeNotified,
             onScheduleStop = viewModel::stopSchedule,
+            onChangeRecipe = onChangeRecipe,
             modifier = modifier
         )
     }
@@ -126,6 +132,7 @@ internal fun RecipeScreen(
     onDoughBallsChanged: (Int) -> Unit,
     onScheduleSet: (Long, Boolean) -> Unit,
     onScheduleStop: () -> Unit,
+    onChangeRecipe: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -151,7 +158,8 @@ internal fun RecipeScreen(
             recipeData = recipeData,
             numberOfDoughBalls = numberOfDoughBalls,
             doughBallWeightGrams = doughBallWeightGrams,
-            onDoughBallsChanged = onDoughBallsChanged
+            onDoughBallsChanged = onDoughBallsChanged,
+            onChangeRecipe = onChangeRecipe
         )
 
         Divider(modifier = Modifier.padding(24.dp))
@@ -174,6 +182,7 @@ private fun OverviewSection(
     numberOfDoughBalls: Int,
     doughBallWeightGrams: Int,
     onDoughBallsChanged: (Int) -> Unit,
+    onChangeRecipe: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var numDoughBalls by remember { mutableIntStateOf(numberOfDoughBalls) }
@@ -184,10 +193,23 @@ private fun OverviewSection(
         onDoughBallsChanged(numDoughBalls)
     }
 
-    IconWithText(
-        painter = painterResource(id = R.drawable.outline_assignment_24),
-        text = recipeData.recipe.name
-    )
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onChangeRecipe)
+            .padding(top = 4.dp, bottom = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconWithText(
+            painter = painterResource(id = R.drawable.outline_assignment_24),
+            text = recipeData.recipe.name
+        )
+        Icon(
+            imageVector = Icons.Default.KeyboardArrowRight,
+            contentDescription = stringResource(R.string.change_recipe)
+        )
+    }
 
     Text(
         modifier = Modifier.padding(start = 4.dp, top = 8.dp, bottom = 8.dp),
@@ -388,11 +410,12 @@ private fun ScheduleSection(
             Text(text = stringResource(id = R.string.schedule))
         }
     } else if (scheduleData is ScheduleUiState.ActiveSchedule) {
+        val formatDate = remember { FormatDateUseCase() }
         scheduleData.steps.forEach { step ->
             ScheduleCard(
-                title = stringResource(id = step.title),
-                description = stringResource(id = step.description),
-                date = step.time
+                title = stringResource(id = step.type.titleRes()),
+                description = stringResource(id = step.type.descriptionRes()),
+                date = formatDate(step.timeMillis)
             )
         }
         Button(onClick = onScheduleStop) {
@@ -420,7 +443,8 @@ private fun DefaultPreview(
                 doughBallWeightGrams = 250,
                 onScheduleSet = {_, _ ->},
                 onScheduleStop = {},
-                onDoughBallsChanged = {}
+                onDoughBallsChanged = {},
+                onChangeRecipe = {}
             )
         }
     }
@@ -441,7 +465,8 @@ private fun PortraitPreview(
                 doughBallWeightGrams = 250,
                 onScheduleSet = {_, _ ->},
                 onScheduleStop = {},
-                onDoughBallsChanged = {}
+                onDoughBallsChanged = {},
+                onChangeRecipe = {}
             )
         }
     }

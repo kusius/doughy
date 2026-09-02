@@ -49,7 +49,8 @@ class RecipeScreenTest {
                 scheduleData = ScheduleUiState.Inactive,
                 onDoughBallsChanged = {},
                 onScheduleStop = {},
-                onScheduleSet = {_, _ ->})
+                onScheduleSet = {_, _ ->},
+                onChangeRecipe = {})
         }
     }
     @Test

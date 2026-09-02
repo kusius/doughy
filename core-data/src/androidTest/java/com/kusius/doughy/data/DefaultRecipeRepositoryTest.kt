@@ -29,8 +29,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import com.kusius.doughy.core.data.DefaultRecipeRepository
-import com.kusius.doughy.core.data.sampleBigaRecipe
-import com.kusius.doughy.core.data.samplePoolishRecipe
+import com.kusius.doughy.core.model.sampleBigaRecipe
+import com.kusius.doughy.core.model.samplePoolishRecipe
 import com.kusius.doughy.core.database.RecipeEntity
 import com.kusius.doughy.core.database.RecipeDao
 import kotlinx.coroutines.flow.flowOf
@@ -90,7 +90,7 @@ private class FakeRecipeDao : RecipeDao {
         emit(data)
     }
 
-    override fun getRecipesList(): List<RecipeEntity> {
+    override suspend fun getRecipesList(): List<RecipeEntity> {
         return data
     }
 
@@ -98,7 +98,7 @@ private class FakeRecipeDao : RecipeDao {
         return flowOf(data.filter { it.isCustom })
     }
 
-    override fun getRecipeByUid(uid: Int): RecipeEntity? {
+    override suspend fun getRecipeByUid(uid: Int): RecipeEntity? {
         return data.find { it.uid == uid }
     }
 

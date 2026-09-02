@@ -1,47 +1,31 @@
 package com.kusius.doughy.core.database.migrations
 
+import android.content.ContentValues
+import android.database.sqlite.SQLiteDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.kusius.doughy.core.database.RecipeEntity
-import com.kusius.doughy.core.model.YeastType
+import com.kusius.doughy.core.database.asEntity
+import com.kusius.doughy.core.model.predefinedRecipes
 
+internal fun SupportSQLiteDatabase.addRecipe(recipeEntity: RecipeEntity) {
+    val content = ContentValues()
+    content.put("name", recipeEntity.name)
+    content.put("hydrationPercent", recipeEntity.hydrationPercent)
+    content.put("oilPercent", recipeEntity.oilPercent)
+    content.put("saltPercent", recipeEntity.saltPercent)
+    content.put("sugarsPercent", recipeEntity.sugarsPercent)
+    content.put("yeastPercent", recipeEntity.yeastPercent)
+    content.put("yeastType", recipeEntity.yeastType.name)
+    content.put("prefermentPercent", recipeEntity.prefermentPercent)
+    content.put("prefermentHydrationPercent", recipeEntity.prefermentHydrationPercent)
+    content.put("prefermentUsesYeast", recipeEntity.prefermentUsesYeast)
+    content.put("prefermentRestHours", recipeEntity.prefermentRestHours)
+    content.put("bulkRestHours", recipeEntity.bulkRestHours)
+    content.put("ballsRestHours", recipeEntity.ballsRestHours)
+    content.put("description", recipeEntity.description)
+    content.put("isCustom", recipeEntity.isCustom)
+    insert("recipe", SQLiteDatabase.CONFLICT_IGNORE, content)
+}
 
-internal val samplePoolishRecipe = RecipeEntity(
-    name = "Poolish Dough",
-
-    hydrationPercent = 0.65f,
-    oilPercent = 0.0f,
-    saltPercent = 0.027f,
-    sugarsPercent = 0.0034f,
-    yeastPercent = 0.0068f,
-    yeastType = YeastType.FRESH,
-    prefermentPercent = 0.21f,
-    prefermentHydrationPercent = 1f,
-    prefermentUsesYeast = true,
-    prefermentRestHours = 16,
-    bulkRestHours = 16,
-    ballsRestHours = 3,
-
-    description = "A simple poolish recipe",
-    isCustom = false
-)
-
-internal val sampleBigaRecipe = RecipeEntity(
-    name = "Biga dough",
-
-    hydrationPercent = 0.75f,
-    oilPercent = 0.0f,
-    saltPercent = 0.03f,
-    sugarsPercent = 0.00f,
-    yeastPercent = 0.003f,
-    yeastType = YeastType.FRESH,
-    prefermentPercent = 0.5f,
-    prefermentHydrationPercent = 0.5f,
-    prefermentUsesYeast = true,
-
-    prefermentRestHours = 48,
-    bulkRestHours = 0,
-    ballsRestHours = 2,
-    description = "Results in an elastic dough, with a dry alcoholic preferment. A mixer is essential for this recipe!",
-    isCustom = false
-)
-
-internal val predefinedRecipes = listOf(samplePoolishRecipe, sampleBigaRecipe)
+internal fun SupportSQLiteDatabase.addPredefinedRecipes() =
+    predefinedRecipes.forEach { addRecipe(it.asEntity()) }

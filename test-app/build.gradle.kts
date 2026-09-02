@@ -23,12 +23,12 @@ plugins {
 
 android {
     namespace = "com.kusius.doughy.test.navigation"
-    compileSdk = 34
+    compileSdk = 36
     targetProjectPath = ":app"
 
     defaultConfig {
-        minSdk = 21
-        targetSdk = 34
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
 
         testInstrumentationRunner = "com.kusius.doughy.core.testing.HiltTestRunner"
     }
@@ -53,6 +53,10 @@ android {
 dependencies {
     implementation(project(":app"))
     implementation(project(":core-data"))
+    implementation(project(":core-database"))
+    implementation(project(":core-model"))
+    implementation(project(":core-datastore"))
+    implementation(project(":core-notifications-api"))
     implementation(project(":core-testing"))
     implementation(project(":feature-recipe"))
 

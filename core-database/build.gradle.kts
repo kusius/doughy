@@ -64,7 +64,7 @@ android {
 
 dependencies {
     implementation(project(":core-model"))
-    implementation(project(":core-testing"))
+    androidTestImplementation(project(":core-testing"))
 
     // Arch Components
     implementation(libs.androidx.room.runtime)

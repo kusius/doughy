@@ -72,18 +72,36 @@ fun RecipeEntity.asRecipe() = Recipe(
     uid = uid
 )
 
+fun Recipe.asEntity() = RecipeEntity(
+    name = name,
+    hydrationPercent = percents.hydrationPercent,
+    oilPercent = percents.oilPercent,
+    saltPercent = percents.saltPercent,
+    sugarsPercent = percents.sugarsPercent,
+    yeastPercent = percents.yeastPercent,
+    yeastType = percents.yeastType,
+    prefermentPercent = percents.prefermentPercent,
+    prefermentHydrationPercent = percents.prefermentHydrationPercent,
+    prefermentUsesYeast = percents.prefermentUsesYeast,
+    prefermentRestHours = rests.prefermentRestHours,
+    bulkRestHours = rests.bulkRestHours,
+    ballsRestHours = rests.ballsRestHours,
+    description = description,
+    isCustom = isCustom,
+)
+
 @Dao
 interface RecipeDao {
     @Query("SELECT * FROM recipe ORDER BY name DESC")
     fun getRecipes(): Flow<List<RecipeEntity>>
     @Query("SELECT * FROM recipe ORDER BY name DESC")
-    fun getRecipesList(): List<RecipeEntity>
+    suspend fun getRecipesList(): List<RecipeEntity>
 
     @Query("SELECT * FROM recipe WHERE isCustom = 1")
     fun getCustomRecipes(): Flow<List<RecipeEntity>>
 
     @Query("SELECT * FROM recipe WHERE uid = :uid")
-    fun getRecipeByUid(uid: Int): RecipeEntity?
+    suspend fun getRecipeByUid(uid: Int): RecipeEntity?
 
     @Insert
     suspend fun insertRecipe(item: RecipeEntity): Long

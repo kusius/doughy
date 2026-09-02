@@ -10,7 +10,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.annotation.CallSuper
-import androidx.multidex.BuildConfig
 import com.kusius.doughy.core_notifications_api.SystemNotificationBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers

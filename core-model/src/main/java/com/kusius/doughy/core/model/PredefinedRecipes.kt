@@ -1,11 +1,11 @@
-package com.kusius.doughy.core.data
+package com.kusius.doughy.core.model
 
-import com.kusius.doughy.core.model.Percents
-import com.kusius.doughy.core.model.Recipe
-import com.kusius.doughy.core.model.Rests
-import com.kusius.doughy.core.model.YeastType
-
-
+/**
+ * The recipes every install starts with. This is the single definition: the database seeds itself
+ * from these and previews render them, so the two can no longer drift apart.
+ *
+ * [Recipe.uid] is a placeholder here; the database assigns the real one when a recipe is inserted.
+ */
 val samplePoolishRecipe = Recipe(
     name = "Poolish Dough",
     percents = Percents(
@@ -49,10 +49,7 @@ val sampleBigaRecipe = Recipe(
     ),
     description = "Results in an elastic dough, with a dry alcoholic preferment. A mixer is essential for this recipe!",
     isCustom = false,
-    uid = 9
+    uid = 0,
 )
 
-val predefinedRecipes = listOf<Recipe> (
-    samplePoolishRecipe,
-    sampleBigaRecipe
-)
+val predefinedRecipes = listOf(samplePoolishRecipe, sampleBigaRecipe)

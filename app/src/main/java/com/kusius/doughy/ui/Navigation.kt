@@ -24,13 +24,24 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kusius.doughy.feature.recipe.ui.RecipeScreen
+import com.kusius.doughy.feature.recipe_selection.ui.RecipeSelectionScreen
 
 @Composable
 fun MainNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "main") {
-        composable("main") { RecipeScreen(modifier = Modifier.padding(16.dp)) }
-        // TODO: Add more destinations
+        composable("main") {
+            RecipeScreen(
+                onChangeRecipe = { navController.navigate("recipeSelection") },
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        composable("recipeSelection") {
+            RecipeSelectionScreen(
+                onRecipeChosen = { navController.popBackStack() },
+                modifier = Modifier.padding(16.dp)
+            )
+        }
     }
 }

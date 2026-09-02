@@ -62,6 +62,7 @@ dependencies {
     implementation(project(":core-notifications-api"))
     implementation(project(":core-datastore"))
     androidTestImplementation(project(":core-testing"))
+    androidTestImplementation(project(":core-database"))
 
     // Serialization
     implementation(libs.kotlinx.serialization.json)
