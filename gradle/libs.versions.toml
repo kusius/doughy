@@ -1,7 +1,7 @@
 [versions]
 android-minSdk = "28"
 android-targetSdk = "36"
-androidGradlePlugin = "8.1.1"
+androidGradlePlugin = "9.0.0"
 androidxActivity = "1.7.2"
 androidxComposeBom = "2023.08.00"
 androidxComposeCompiler = "1.5.3"
@@ -15,13 +15,13 @@ androidxTestCore = "1.6.1"
 androidxTestExt = "1.2.1"
 androidxTestRunner = "1.6.2"
 coroutines = "1.7.3"
-hilt = "2.48"
+hilt = "2.57.2"
 junit = "4.13.2"
-kotlin = "1.9.10"
+kotlin = "2.2.10"
 kotlinSerializationPlugin = "1.9.0"
 kotlinxSerializationJson = "1.6.0"
 kotlinxDateTime = "0.4.1"
-ksp = "1.9.10-1.0.13"
+ksp = "2.3.2"
 espresso-core = "3.5.1"
 appcompat = "1.6.1"
 material = "1.8.0"
@@ -75,3 +75,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
