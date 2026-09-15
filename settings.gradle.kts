@@ -28,7 +28,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Multimodule template"
+rootProject.name = "Doughy"
 
 include(":app")
 include(":core-data")
