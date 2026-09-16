@@ -29,22 +29,30 @@ import androidx.compose.ui.unit.dp
 import com.kusius.doughy.core.ui.MyApplicationTheme
 
 @Composable
-fun ScheduleCard(title: String, description: String, date: String, modifier: Modifier = Modifier) {
+fun ScheduleCard(
+    title: String,
+    description: String,
+    date: String,
+    modifier: Modifier = Modifier,
+) {
     ElevatedCard(elevation = CardDefaults.cardElevation(10.dp)) {
         Column(
-            modifier = Modifier
-                .padding(8.dp)
-                .animateContentSize(
-                    animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioNoBouncy,
-                        stiffness = Spring.StiffnessMedium
-                    )
-                ),
+            modifier =
+                Modifier
+                    .padding(8.dp)
+                    .animateContentSize(
+                        animationSpec =
+                            spring(
+                                dampingRatio = Spring.DampingRatioNoBouncy,
+                                stiffness = Spring.StiffnessMedium,
+                            ),
+                    ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-            Row(modifier = Modifier.fillMaxWidth(),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(text = title, style = MaterialTheme.typography.titleMedium)
                 Text(text = date)
@@ -55,17 +63,17 @@ fun ScheduleCard(title: String, description: String, date: String, modifier: Mod
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 private fun PreviewScheduleCard() {
     MyApplicationTheme {
         Surface {
             ScheduleCard(
-                title = "Cook time!",
-                description = "Place your topped pizza in your oven. First with only the " +
-                        "sauce. After its initial rise, take it out and place your other toppings. Cook another 1 minute until done.",
-                date = "13 Oct 15:30"
+                title = "Cooking time",
+                description = """
+                    This is a text.
+                """,
+                date = "13 Oct 15:30",
             )
         }
     }

@@ -27,20 +27,20 @@ import com.kusius.doughy.feature.recipe.ui.RecipeScreen
 import com.kusius.doughy.feature.recipe_selection.ui.RecipeSelectionScreen
 
 @Composable
-fun MainNavigation() {
+fun MainNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "main") {
         composable("main") {
             RecipeScreen(
                 onChangeRecipe = { navController.navigate("recipeSelection") },
-                modifier = Modifier.padding(16.dp)
+                modifier = modifier.padding(16.dp),
             )
         }
         composable("recipeSelection") {
             RecipeSelectionScreen(
                 onRecipeChosen = { navController.popBackStack() },
-                modifier = Modifier.padding(16.dp)
+                modifier = modifier.padding(16.dp),
             )
         }
     }

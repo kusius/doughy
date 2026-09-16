@@ -18,7 +18,7 @@
 plugins {
     alias(libs.plugins.android.test)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -65,7 +65,7 @@ dependencies {
 
     // Hilt and instrumented tests.
     implementation(libs.hilt.android.testing)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
 
     // Compose
     implementation(libs.androidx.compose.ui.test.junit4)

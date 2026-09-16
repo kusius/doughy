@@ -1,0 +1,11 @@
+root = true
+
+[*.{kt,kts}]
+# Enable the Compose ruleset (mrmans0n/compose-rules, loaded by ktlint via --ruleset).
+ktlint_compose = enabled
+# @Composable functions are PascalCase by design; compose:naming-check covers them instead.
+ktlint_function_naming_ignore_when_annotated_with = Composable
+
+# Generated Kotlin lives under build/.
+[**/build/**/*.kt]
+ktlint = disabled
