@@ -21,34 +21,16 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import com.kusius.doughy.core.ui.MyApplicationTheme
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -60,21 +42,14 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kusius.doughy.core.ui.DoughyTheme
 import com.kusius.doughy.core.ui.components.IconWithText
+import com.kusius.doughy.core.ui.components.MajorMinorText
 import com.kusius.doughy.core.ui.components.MyDatePickerDialog
 import com.kusius.doughy.core.ui.components.MyTimePickerDialog
-import com.kusius.doughy.core.ui.components.MajorMinorText
 import com.kusius.doughy.feature.recipe.R
 import com.kusius.doughy.feature.recipe.ui.components.ScheduleCard
-import kotlinx.datetime.Clock
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.plus
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.*
 import java.lang.Integer.max
 import kotlin.math.roundToInt
 
@@ -434,7 +409,7 @@ private fun DefaultPreview(
     @PreviewParameter(RecipePreviewParameterProvider::class) recipeData: RecipeUiState.RecipeData,
     scheduleData: ScheduleUiState = ScheduleUiState.Inactive
 ) {
-    MyApplicationTheme {
+    DoughyTheme {
         Surface {
             RecipeScreen(
                 recipeData = recipeData,
@@ -456,7 +431,7 @@ private fun PortraitPreview(
     @PreviewParameter(RecipePreviewParameterProvider::class) recipeData: RecipeUiState.RecipeData,
     scheduleData: ScheduleUiState = ScheduleUiState.Inactive
 ) {
-    MyApplicationTheme {
+    DoughyTheme {
         Surface {
             RecipeScreen(
                 recipeData = recipeData,

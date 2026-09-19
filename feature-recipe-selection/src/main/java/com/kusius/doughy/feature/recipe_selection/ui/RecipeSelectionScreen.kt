@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -28,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusius.doughy.core.model.Recipe
-import com.kusius.doughy.core.ui.MyApplicationTheme
+import com.kusius.doughy.core.ui.DoughyTheme
 import com.kusius.doughy.feature.recipe_selection.R
 import com.kusius.doughy.feature.recipe_selection.RecipeListPreviewParameterProvider
 import com.kusius.doughy.feature.recipe_selection.RecipeSelectionViewModel
@@ -94,7 +93,7 @@ internal fun RecipeSelectionScreen(
 private fun DefaultPreview(
     @PreviewParameter(RecipeListPreviewParameterProvider::class) recipes: List<Recipe>
 ) {
-    MyApplicationTheme {
+    DoughyTheme {
         Surface {
             RecipeSelectionScreen(recipes, onRecipeSelected = {})
         }
